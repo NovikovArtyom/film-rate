@@ -1,20 +1,24 @@
 from django.contrib.auth.models import AbstractUser
+import uuid
 from django.db import models
 
+
 class CustomUser(AbstractUser):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, verbose_name='UUID')
     phone = models.CharField(max_length=20, blank=True, unique=True, verbose_name='Телефон')
     email = models.EmailField(unique=True, verbose_name='Email')
-    login = models.CharField(max_length=20, unique=True, blank=False, null=False, verbose_name='Логин')
     first_name = models.CharField(max_length=20, blank=False, null=False, verbose_name='Фамилия')
     last_name = models.CharField(max_length=20, blank=False, null=False, verbose_name='Имя')
 
-    USERNAME_FIELD = 'login'
+    USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email', 'phone', 'first_name', 'last_name']
 
     def __str__(self):
-        return self.login
+        return self.username
+
 
 class BaseModel(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, verbose_name='UUID')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -56,7 +60,7 @@ class Film(BaseModel):
     release_year = models.IntegerField(null=False, blank=False)
     duration = models.IntegerField(null=False, blank=False)
     rating = models.FloatField(default=0)
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
+    category = models.ManyToManyField(Category, related_name="films")
     director = models.ForeignKey(Director, on_delete=models.SET_NULL, null=True, blank=True)
     actor = models.ManyToManyField(Actor, related_name="films")
 

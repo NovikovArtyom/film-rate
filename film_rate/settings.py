@@ -134,6 +134,11 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+
+    'DEFAULT_RENDERER_CLASSES': [
+        'film_rate_api.renderers.CustomJSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
 }
 
 SIMPLE_JWT = {
@@ -142,8 +147,8 @@ SIMPLE_JWT = {
 }
 
 DJOSER = {
-    'LOGIN_FIELD': 'login',
-    'USER_ID_FIELD': 'login',
+    'LOGIN_FIELD': 'username',
+    'USER_ID_FIELD': 'username',
     'SERIALIZERS': {
         'user': 'film_rate_api.serializers.CustomUserSerializer',
         'current_user': 'film_rate_api.serializers.CustomUserSerializer',
