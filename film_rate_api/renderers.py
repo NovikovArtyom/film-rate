@@ -8,8 +8,8 @@ class CustomJSONRenderer(JSONRenderer):
 
         formatted_data = {
             'code': status_code,
-            'data': data,
-            'message': getattr(response, 'message', None) or self._get_default_message(status_code)
+            'message': getattr(response, 'message', None) or self._get_default_message(status_code),
+            'data': data
         }
 
         return super().render(formatted_data, accepted_media_type, renderer_context)
